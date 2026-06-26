@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MCJabi Order App</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(-45deg,#fff8dc,#ffe4b5,#ffd54f,#fff3cd);
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(90deg,#d60000,#ff3c3c);
+    color:white;
+    text-align:center;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+header h1{
+    font-size:45px;
+    letter-spacing:1px;
+    animation:pop .8s;
+}
+
+header p{
+    margin-top:10px;
+    color:#ffe96a;
+    font-size:18px;
+}
+
+@keyframes pop{
+    from{
+        transform:scale(.8);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+/* MENU */
+
+.menu{
+    width:95%;
+    max-width:1350px;
+    margin:40px auto;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+/* CARD */
+
+.item{
+    background:rgba(255,255,255,.65);
+    backdrop-filter:blur(10px);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+
+    transition:.4s;
+}
+
+.item:hover{
+    transform:translateY(-12px) scale(1.03);
+    box-shadow:0 25px 40px rgba(0,0,0,.25);
+}
+
+.item img{
+    width:100%;
+    height:230px;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.item:hover img{
+    transform:scale(1.08);
+}
+
+.details{
+    padding:25px;
+    text-align:center;
+}
+
+.details h2{
+    color:#d60000;
+    margin-bottom:12px;
+    font-size:28px;
+}
+
+.price{
+    display:inline-block;
+    background:#ffdf80;
+    color:#c20000;
+    padding:8px 18px;
+    border-radius:50px;
+    font-weight:bold;
+    font-size:22px;
+    margin-bottom:18px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.qty{
+    margin-top:15px;
+}
+
+input[type=number]{
+    width:100px;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    outline:none;
+    background:#f3f3f3;
+    text-align:center;
+    font-size:18px;
+    transition:.3s;
+}
+
+input[type=number]:focus{
+    background:white;
+    box-shadow:0 0 12px rgba(255,0,0,.3);
+}
+
+/* ORDER BOX */
+
+.order{
+    width:92%;
+    max-width:650px;
+    margin:50px auto;
+    background:white;
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.order h2{
+    color:#d60000;
+    text-align:center;
+    margin-bottom:25px;
+    font-size:32px;
+}
+
+label{
+    font-size:18px;
+}
+
+select{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border-radius:12px;
+    border:2px solid #ddd;
+    font-size:17px;
+}
+
+select:focus{
+    outline:none;
+    border-color:#d60000;
+}
+
+/* BUTTONS */
+
+button{
+    width:100%;
+    margin-top:25px;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    font-size:20px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    background:linear-gradient(90deg,#d60000,#ff3c3c);
+    transition:.35s;
+}
+
+button:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 20px rgba(214,0,0,.3);
+}
+
+/* RECEIPT */
+
+.receipt hr{
+    border:none;
+    border-top:2px dashed #ccc;
+    margin:15px 0;
+}
+
+.receipt p{
+    display:flex;
+    justify-content:space-between;
+    margin:10px 0;
+    font-size:18px;
+}
+
+#receiptItems{
+    line-height:2;
+    min-height:70px;
+    font-size:17px;
+}
+
+.total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:60px;
+    background:#d60000;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+header h1{
+    font-size:34px;
+}
+
+.item img{
+    height:200px;
+}
+
+.details h2{
+    font-size:24px;
+}
+
+.order{
+    padding:25px;
+}
+
+.total{
+    font-size:24px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🍔 MCJabi Order App 🍟</h1>
+
+<p>Fresh • Fast • Delicious</p>
+
+</header>
+
+<div class="menu">
+
+<div class="item">
+
+<img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800">
+
+<div class="details">
+
+<h2>Hamburger</h2>
+
+<div class="price">₱100</div>
+
+Quantity
+
+<br><br>
+
+<input type="number"
+
+id="qty-hamburger"
+
+value="0"
+
+min="0">
+
+</div>
+
+</div>
+
+<div class="item">
+
+<img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=800">
+
+<div class="details">
+
+<h2>Spaghetti</h2>
+
+<div class="price">₱120</div>
+
+Quantity
+
+<br><br>
+
+<input
+
+type="number"
+
+id="qty-spaghetti"
+
+value="0"
+
+min="0">
+
+</div>
+
+</div>
+
+<div class="item">
+
+<img src="https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=800">
+
+<div class="details">
+
+<h2>Fried Chicken</h2>
+
+<div class="price">₱150</div>
+
+Quantity
+
+<br><br>
+
+<input
+
+type="number"
+
+id="qty-chicken"
+
+value="0"
+
+min="0">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="order">
+
+    <h2>🛒 Checkout</h2>
+
+    <label><b>Discount</b></label>
+
+    <select id="discount">
+        <option value="0">None</option>
+        <option value="0.25">Senior Citizen (25%)</option>
+        <option value="0.20">PWD (20%)</option>
+        <option value="0.15">Membership Card (15%)</option>
+    </select>
+
+    <div class="receipt">
+
+        <h3>🧾 Order Summary</h3>
+
+        <div id="receiptItems">
+            No items selected.
+        </div>
+
+        <hr>
+
+        <p><strong>Subtotal:</strong> <span id="subtotal">₱0.00</span></p>
+
+        <p><strong>Discount:</strong> <span id="discountAmount">₱0.00</span></p>
+
+        <div class="total">
+            Total: <span id="grandTotal">₱0.00</span>
+        </div>
+
+    </div>
+
+   
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+© 2026 MCJabi Order App
+
+</footer>
+
+<script>
+const prices = {
+    hamburger: 100,
+    spaghetti: 120,
+    chicken: 150
+};
+
+// Calculate Order
+function calculateOrder(){
+
+    const burger = parseInt(document.getElementById("qty-hamburger").value) || 0;
+    const spaghetti = parseInt(document.getElementById("qty-spaghetti").value) || 0;
+    const chicken = parseInt(document.getElementById("qty-chicken").value) || 0;
+
+    const subtotal =
+        burger * prices.hamburger +
+        spaghetti * prices.spaghetti +
+        chicken * prices.chicken;
+
+    const discountRate =
+        parseFloat(document.getElementById("discount").value);
+
+    const discount = subtotal * discountRate;
+
+    const total = subtotal - discount;
+
+    let summary = "";
+
+    if(burger>0)
+        summary += `🍔 Hamburger × ${burger}<br>`;
+
+    if(spaghetti>0)
+        summary += `🍝 Spaghetti × ${spaghetti}<br>`;
+
+    if(chicken>0)
+        summary += `🍗 Fried Chicken × ${chicken}<br>`;
+
+    if(summary==="")
+        summary="No items selected.";
+
+    document.getElementById("receiptItems").innerHTML = summary;
+
+    document.getElementById("subtotal").innerHTML =
+        `₱${subtotal.toFixed(2)}`;
+
+    document.getElementById("discountAmount").innerHTML =
+        `₱${discount.toFixed(2)}`;
+
+    document.getElementById("grandTotal").innerHTML =
+        `₱${total.toFixed(2)}`;
+}
+
+// Auto update whenever quantity changes
+document.getElementById("qty-hamburger")
+.addEventListener("input", calculateOrder);
+
+document.getElementById("qty-spaghetti")
+.addEventListener("input", calculateOrder);
+
+document.getElementById("qty-chicken")
+.addEventListener("input", calculateOrder);
+
+document.getElementById("discount")
+.addEventListener("change", calculateOrder);
+
+// Initial total
+calculateOrder();
+
+// Order Confirmation
+function placeOrder(){
+
+    const burger =
+        parseInt(document.getElementById("qty-hamburger").value) || 0;
+
+    const spaghetti =
+        parseInt(document.getElementById("qty-spaghetti").value) || 0;
+
+    const chicken =
+        parseInt(document.getElementById("qty-chicken").value) || 0;
+
+    if(
+        burger===0 &&
+        spaghetti===0 &&
+        chicken===0
+    ){
+
+        alert("🍔 Please select at least one item.");
+
+        return;
+
+    }
+
+    alert(
+`🎉 Thank you for ordering from MCJabi!
+
+Your food is now being prepared.
+
+🍔 Hamburger : ${burger}
+🍝 Spaghetti : ${spaghetti}
+🍗 Fried Chicken : ${chicken}
+
+Enjoy your meal!`
+    );
+
+}
+
+// Create Order button dynamically
+const orderButton = document.createElement("button");
+
+orderButton.innerHTML = "✅ Place Order";
+
+orderButton.style.marginTop = "15px";
+
+orderButton.onclick = placeOrder;
+
+document.querySelector(".order")
+.appendChild(orderButton);
+
+</script>

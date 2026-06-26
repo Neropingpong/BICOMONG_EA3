@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Calculator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(-45deg,#667eea,#764ba2,#23a6d5,#23d5ab);
+    background-size:400% 400%;
+    animation:bg 12s ease infinite;
+    padding:20px;
+}
+
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    width:400px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 8px 32px rgba(0,0,0,.3);
+    text-align:center;
+    color:white;
+}
+
+#clock{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+h2{
+    margin-bottom:20px;
+    font-size:32px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+button{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    color:#667eea;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+#modeBtn{
+    width:100%;
+    margin-bottom:15px;
+}
+
+#result{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:rgba(255,255,255,.2);
+    font-size:24px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.pop{
+    transform:scale(1.08);
+}
+
+h3{
+    margin-top:20px;
+}
+
+#history{
+    text-align:left;
+    margin-top:10px;
+    max-height:150px;
+    overflow-y:auto;
+    padding-left:20px;
+}
+
+#history li{
+    margin:5px 0;
+}
+
+.dark{
+    background:#121212;
+}
+
+.dark .container{
+    background:rgba(30,30,30,.8);
+}
+
+.dark input{
+    background:#333;
+    color:white;
+}
+
+.dark button{
+    background:#444;
+    color:white;
+}
+
+.dark #result{
+    background:#333;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <button id="modeBtn" onclick="toggleMode()">🌙 Dark Mode</button>
+
+    <div id="clock"></div>
+
+    <h2>Simple Calculator</h2>
+
+    <input type="number" id="num1" placeholder="Enter first number">
+
+    <input type="number" id="num2" placeholder="Enter second number">
+
+    <div class="buttons">
+        <button onclick="add()"> Add</button>
+        <button onclick="subtract()"> Subtract</button>
+        <button onclick="multiply()"> Multiply</button>
+        <button onclick="divide()"> Divide</button>
+    </div>
+
+    <button style="margin-top:10px;width:100%;" onclick="clearAll()"> Clear All</button>
+
+    <!--
+    The <div id="result"></div> element serves as a container for displaying
+    calculation results. JavaScript locates this element using
+    document.getElementById("result") and updates its content dynamically
+    using the innerText property whenever a calculation is performed.
+    -->
+
+    <div id="result">Result: 0</div>
+
+    <h3>📜 Calculation History</h3>
+    <ul id="history"></ul>
+
+</div>
+
+<script>
+
+function updateClock(){
+    const now = new Date();
+    document.getElementById("clock").innerText =
+    now.toLocaleTimeString();
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+function toggleMode(){
+    document.body.classList.toggle("dark");
+
+    const btn = document.getElementById("modeBtn");
+
+    btn.innerHTML =
+    document.body.classList.contains("dark")
+    ? "☀️ Light Mode"
+    : "🌙 Dark Mode";
+}
+
+function getNumbers(){
+
+    let num1 =
+    parseFloat(document.getElementById("num1").value);
+
+    let num2 =
+    parseFloat(document.getElementById("num2").value);
+
+    if(isNaN(num1) || isNaN(num2)){
+        document.getElementById("result").innerText =
+        "Please enter both numbers.";
+        return null;
+    }
+
+    return {num1,num2};
+}
+
+function animateResult(){
+
+    const result =
+    document.getElementById("result");
+
+    result.classList.add("pop");
+
+    setTimeout(()=>{
+        result.classList.remove("pop");
+    },300);
+}
+
+function addHistory(text){
+
+    const li =
+    document.createElement("li");
+
+    li.innerText = text;
+
+    document.getElementById("history")
+    .prepend(li);
+}
+
+function add(){
+
+    let numbers = getNumbers();
+
+    if(!numbers) return;
+
+    let answer =
+    numbers.num1 + numbers.num2;
+
+    document.getElementById("result").innerText =
+    "Result: " + answer;
+
+    addHistory(
+    `${numbers.num1} + ${numbers.num2} = ${answer}`);
+
+    animateResult();
+}
+
+function subtract(){
+
+    let numbers = getNumbers();
+
+    if(!numbers) return;
+
+    let answer =
+    numbers.num1 - numbers.num2;
+
+    document.getElementById("result").innerText =
+    "Result: " + answer;
+
+    addHistory(
+    `${numbers.num1} - ${numbers.num2} = ${answer}`);
+
+    animateResult();
+}
+
+function multiply(){
+
+    let numbers = getNumbers();
+
+    if(!numbers) return;
+
+    let answer =
+    numbers.num1 * numbers.num2;
+
+    document.getElementById("result").innerText =
+    "Result: " + answer;
+
+    addHistory(
+    `${numbers.num1} × ${numbers.num2} = ${answer}`);
+
+    animateResult();
+}
+
+function divide(){
+
+    let numbers = getNumbers();
+
+    if(!numbers) return;
+
+    let answer;
+
+    if(numbers.num2 === 0){
+
+        answer = "Cannot divide by zero";
+
+    }else{
+
+        answer =
+        (numbers.num1 / numbers.num2).toFixed(2);
+    }
+
+    document.getElementById("result").innerText =
+    "Result: " + answer;
+
+    addHistory(
+    `${numbers.num1} ÷ ${numbers.num2} = ${answer}`);
+
+    animateResult();
+}
+
+function clearAll(){
+
+    document.getElementById("num1").value = "";
+    document.getElementById("num2").value = "";
+
+    document.getElementById("result").innerText =
+    "Result: 0";
+
+    document.getElementById("history").innerHTML = "";
+}
+
+document.addEventListener("keydown",function(e){
+
+    if(e.key === "Enter"){
+        add();
+    }
+
+});
+</script>
+
+</body>
+</html>
+
