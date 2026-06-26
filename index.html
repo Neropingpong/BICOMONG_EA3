@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🍬 Candy Corner Order App</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Fredoka',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(135deg,#FFE5EC,#FDE2FF,#D8F3DC);
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+}
+
+/* HEADER */
+
+header{
+
+background:
+linear-gradient(90deg,#ff4fa0,#ff7ac6);
+
+padding:25px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+color:white;
+
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+position:sticky;
+
+top:0;
+
+z-index:1000;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.logo h1{
+
+font-size:36px;
+
+}
+
+.badge{
+
+background:white;
+
+color:#ff4fa0;
+
+padding:8px 15px;
+
+border-radius:30px;
+
+font-weight:bold;
+
+}
+
+.container{
+
+width:95%;
+
+max-width:1500px;
+
+margin:30px auto;
+
+display:grid;
+
+grid-template-columns:1fr 370px;
+
+gap:30px;
+
+}
+
+/* SEARCH */
+
+.searchBar{
+
+display:flex;
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+.searchBar input{
+
+flex:1;
+
+padding:16px;
+
+border:none;
+
+border-radius:15px;
+
+font-size:17px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.searchBar select{
+
+padding:16px;
+
+border:none;
+
+border-radius:15px;
+
+font-size:17px;
+
+}
+
+/* PRODUCTS */
+
+.products{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+gap:25px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.75);
+
+backdrop-filter:blur(15px);
+
+border-radius:25px;
+
+overflow:hidden;
+
+box-shadow:0 15px 30px rgba(0,0,0,.12);
+
+transition:.35s;
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.card img{
+
+width:100%;
+
+height:220px;
+
+object-fit:cover;
+
+transition:.4s;
+
+}
+
+.card:hover img{
+
+transform:scale(1.08);
+
+}
+
+.info{
+
+padding:20px;
+
+text-align:center;
+
+}
+
+.info h2{
+
+color:#ff4fa0;
+
+margin-bottom:10px;
+
+}
+
+.info p{
+
+color:#666;
+
+font-size:15px;
+
+margin-bottom:15px;
+
+}
+
+.price{
+
+display:inline-block;
+
+padding:8px 18px;
+
+border-radius:30px;
+
+background:#FFD166;
+
+font-size:22px;
+
+font-weight:bold;
+
+margin-bottom:15px;
+
+}
+
+.qtyBox{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:10px;
+
+margin:15px 0;
+
+}
+
+.qtyBox button{
+
+width:40px;
+
+height:40px;
+
+border:none;
+
+border-radius:50%;
+
+background:#ff4fa0;
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+}
+
+.qty{
+
+font-size:22px;
+
+width:40px;
+
+text-align:center;
+
+}
+
+.addBtn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:15px;
+
+cursor:pointer;
+
+font-size:18px;
+
+background:linear-gradient(90deg,#ff4fa0,#b76dff);
+
+color:white;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+.addBtn:hover{
+
+transform:scale(1.03);
+
+}
+
+/* CART */
+
+.cart{
+
+position:sticky;
+
+top:100px;
+
+background:white;
+
+border-radius:25px;
+
+padding:25px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+height:fit-content;
+
+}
+
+.cart h2{
+
+text-align:center;
+
+color:#ff4fa0;
+
+margin-bottom:20px;
+
+}
+
+.cartItems{
+
+min-height:220px;
+
+max-height:350px;
+
+overflow:auto;
+
+}
+
+.empty{
+
+text-align:center;
+
+color:#999;
+
+padding:50px 0;
+
+}
+
+.itemRow{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:10px 0;
+
+border-bottom:1px solid #eee;
+
+}
+
+.itemRow small{
+
+color:#888;
+
+}
+
+.summary{
+
+margin-top:20px;
+
+}
+
+.summary div{
+
+display:flex;
+
+justify-content:space-between;
+
+margin:12px 0;
+
+font-size:17px;
+
+}
+
+.total{
+
+background:#ff4fa0;
+
+padding:15px;
+
+border-radius:15px;
+
+color:white;
+
+font-size:22px;
+
+font-weight:bold;
+
+display:flex;
+
+justify-content:space-between;
+
+}
+
+.discount{
+
+width:100%;
+
+padding:12px;
+
+margin:20px 0;
+
+border-radius:12px;
+
+border:2px solid #eee;
+
+font-size:16px;
+
+}
+
+.checkout{
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:15px;
+
+background:linear-gradient(90deg,#ff4fa0,#ff8c42);
+
+color:white;
+
+font-size:20px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.checkout:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+/* TOAST */
+
+.toast{
+
+position:fixed;
+
+right:20px;
+
+bottom:20px;
+
+background:#27ae60;
+
+color:white;
+
+padding:18px 30px;
+
+border-radius:12px;
+
+font-weight:bold;
+
+opacity:0;
+
+transform:translateY(50px);
+
+transition:.4s;
+
+z-index:9999;
+
+}
+
+.toast.show{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+@media(max-width:1000px){
+
+.container{
+
+grid-template-columns:1fr;
+
+}
+
+.cart{
+
+position:relative;
+
+top:0;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+<h1>🍬 Candy Corner</h1>
+</div>
+
+<div class="badge">
+🛒 <span id="cartCount">0</span> Items
+</div>
+
+</header>
+
+<div class="container">
+
+<div>
+
+<div class="searchBar">
+
+<input
+type="text"
+id="search"
+placeholder="🔍 Search candies...">
+
+<select id="category">
+
+<option value="all">All</option>
+
+<option value="Chocolate">Chocolate</option>
+
+<option value="Candy">Candy</option>
+
+<option value="Dessert">Dessert</option>
+
+</select>
+
+</div>
+
+<div class="products" id="products"></div>
+
+</div>
+
+<div class="cart">
+
+<h2>🛍 Your Cart</h2>
+
+<div class="cartItems" id="cartItems">
+
+<div class="empty">
+Your cart is empty 🍭
+</div>
+
+</div>
+
+<select id="discount" class="discount">
+
+<option value="0">No Discount</option>
+
+<option value=".20">PWD (20%)</option>
+
+<option value=".20">Senior (20%)</option>
+
+<option value=".10">Student (10%)</option>
+
+<option value=".15">Promo (15%)</option>
+
+</select>
+
+<div class="summary">
+
+<div>
+
+<span>Subtotal</span>
+
+<span id="subtotal">₱0.00</span>
+
+</div>
+
+<div>
+
+<span>Discount</span>
+
+<span id="discountPrice">₱0.00</span>
+
+</div>
+
+<div class="total">
+
+<span>Total</span>
+
+<span id="total">₱0.00</span>
+
+</div>
+
+</div>
+
+<button class="checkout" id="checkoutBtn">
+
+🍬 Checkout
+
+</button>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast">
+
+Added to cart 🍭
+
+</div>
+
+<script>
+
+const candies = [{
+name:"Chocolate Bar",
+price:45,
+category:"Chocolate",
+image:"https://images.unsplash.com/photo-1549007994-cb92caebd54b?w=800",
+desc:"Creamy milk chocolate."
+},
+
+{
+name:"Lollipop",
+price:20,
+category:"Candy",
+image:"https://images.unsplash.com/photo-1575224300306-1b8da36134ec?w=800",
+desc:"Sweet colorful lollipop."
+},
+
+{
+name:"Gummy Bears",
+price:35,
+category:"Candy",
+image:"https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=800",
+desc:"Soft fruity gummies."
+},
+
+{
+name:"Marshmallow",
+price:30,
+category:"Candy",
+image:"https://images.unsplash.com/photo-1511381939415-e44015466834?w=800",
+desc:"Fluffy vanilla marshmallows."
+},
+
+{
+name:"Cupcake",
+price:80,
+category:"Dessert",
+image:"https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800",
+desc:"Rainbow frosted cupcake."
+},
+
+{
+name:"Donut",
+price:65,
+category:"Dessert",
+image:"https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800",
+desc:"Chocolate glazed donut."
+},
+
+{
+name:"Cookies",
+price:55,
+category:"Dessert",
+image:"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800",
+desc:"Fresh baked cookies."
+},
+
+
+{
+    name:"Sour Patch Kids",
+    price:50,
+    category:"Candy",
+    image:"sourpatch.jpg",
+    desc:"Sour then sweet gummy candies."
+},
+
+{
+    name: "KitKat",
+    price: 30,
+    category: "Chocolate",
+    image: "kitkat.jpg",
+    desc: "Crispy wafer covered in milk chocolate."
+},
+
+{
+    name:"Ferrero Rocher",
+    price:55,
+    category:"Chocolate",
+    image:"ferrero.jpg",
+    desc:"Hazelnut chocolate with a crispy wafer shell."
+},
+
+
+{
+    name: "Candy Cane",
+    price: 25,
+    category: "Candy",
+    image: "candycane.jpg",
+    desc: "Classic peppermint candy."
+}
+];
+
+let cart=[];
+
+function renderProducts(){
+
+const list=document.getElementById("products");
+
+list.innerHTML="";
+
+const keyword=document
+.getElementById("search")
+.value.toLowerCase();
+
+const cat=document
+.getElementById("category")
+.value;
+
+candies.forEach((c,index)=>{
+
+if(
+(cat==="all"||c.category===cat)
+&&
+c.name.toLowerCase().includes(keyword)
+){
+
+list.innerHTML+=`
+
+<div class="card">
+
+<img src="${c.image}">
+
+<div class="info">
+
+<h2>${c.name}</h2>
+
+<p>${c.desc}</p>
+
+<div class="price">
+
+₱${c.price}
+
+</div>
+
+<button
+class="addBtn"
+onclick="addCart(${index})">
+
+🍬 Add to Cart
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+}
+
+function addCart(index){
+
+const candy=candies[index];
+
+const found=cart.find(
+item=>item.name===candy.name
+);
+
+if(found){
+
+found.qty++;
+
+}else{
+
+cart.push({
+
+...candy,
+
+qty:1
+
+});
+
+}
+
+showToast();
+
+renderCart();
+
+}
+
+function increase(index){
+
+cart[index].qty++;
+
+renderCart();
+
+}
+
+function decrease(index){
+
+cart[index].qty--;
+
+if(cart[index].qty<=0){
+
+cart.splice(index,1);
+
+}
+
+renderCart();
+
+}
+
+function renderCart(){
+
+const box=
+document.getElementById("cartItems");
+
+if(cart.length===0){
+
+box.innerHTML=
+'<div class="empty">Your cart is empty 🍭</div>';
+
+}else{
+
+box.innerHTML="";
+
+cart.forEach((item,index)=>{
+
+box.innerHTML+=`
+
+<div class="itemRow">
+
+<div>
+
+<b>${item.name}</b>
+
+<br>
+
+<small>
+
+₱${item.price}
+
+</small>
+
+</div>
+
+<div>
+
+<button
+onclick="decrease(${index})">−</button>
+
+<b style="margin:0 10px">
+
+${item.qty}
+
+</b>
+
+<button
+onclick="increase(${index})">+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+calculate();
+}
+
+function calculate(){
+
+let subtotal = 0;
+
+cart.forEach(item=>{
+    subtotal += item.price * item.qty;
+});
+
+const discountRate =
+parseFloat(document.getElementById("discount").value);
+
+const discount = subtotal * discountRate;
+const total = subtotal - discount;
+
+document.getElementById("subtotal").textContent =
+"₱" + subtotal.toFixed(2);
+
+document.getElementById("discountPrice").textContent =
+"-₱" + discount.toFixed(2);
+
+document.getElementById("total").textContent =
+"₱" + total.toFixed(2);
+
+document.getElementById("cartCount").textContent =
+cart.reduce((a,b)=>a+b.qty,0);
+
+}
+
+// =========================
+// TOAST NOTIFICATION
+// =========================
+function showToast(){
+
+const toast =
+document.getElementById("toast");
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},2000);
+
+}
+
+// =========================
+// SEARCH & FILTER
+// =========================
+document
+.getElementById("search")
+.addEventListener("input",renderProducts);
+
+document
+.getElementById("category")
+.addEventListener("change",renderProducts);
+
+document
+.getElementById("discount")
+.addEventListener("change",calculate);
+
+// =========================
+// CHECKOUT
+// =========================
+document
+.getElementById("checkoutBtn")
+.addEventListener("click",()=>{
+
+if(cart.length===0){
+
+showToast();
+document.getElementById("toast").innerHTML =
+"🛒 Your cart is empty!";
+
+setTimeout(()=>{
+document.getElementById("toast").innerHTML =
+"Added to cart 🍭";
+},2000);
+
+return;
+
+}
+
+let receipt = "";
+
+cart.forEach(item=>{
+
+receipt +=
+`${item.name} x${item.qty}
+= ₱${(item.price*item.qty).toFixed(2)}\n`;
+
+});
+
+const subtotal = cart.reduce(
+(sum,item)=>sum+(item.price*item.qty),0
+);
+
+const discountRate =
+parseFloat(document.getElementById("discount").value);
+
+const discount = subtotal * discountRate;
+const total = subtotal - discount;
+
+const orderNo =
+Math.floor(Math.random()*900000)+100000;
+
+const now = new Date();
+
+const date =
+now.toLocaleDateString();
+
+const time =
+now.toLocaleTimeString();
+
+document.body.insertAdjacentHTML("beforeend",`
+
+<div id="receiptModal"
+style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:99999;
+animation:fade .3s;
+">
+
+<div
+style="
+background:white;
+padding:35px;
+border-radius:25px;
+width:420px;
+max-width:90%;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+">
+
+<h1 style="color:#ff4fa0;">
+🍬 Thank You!
+</h1>
+
+<p style="margin:10px 0;color:#777;">
+Order Successful
+</p>
+
+<hr>
+
+<pre style="
+text-align:left;
+font-family:monospace;
+font-size:14px;
+white-space:pre-wrap;
+margin:20px 0;
+">
+
+Order #: ${orderNo}
+
+Date: ${date}
+
+Time: ${time}
+
+----------------------------
+
+${receipt}
+
+----------------------------
+
+Subtotal : ₱${subtotal.toFixed(2)}
+
+Discount : ₱${discount.toFixed(2)}
+
+TOTAL : ₱${total.toFixed(2)}
+
+</pre>
+
+<button onclick="closeReceipt()"
+style="
+padding:14px 30px;
+border:none;
+border-radius:12px;
+background:#ff4fa0;
+color:white;
+font-size:18px;
+cursor:pointer;
+">
+Done
+</button>
+
+</div>
+
+</div>
+
+`);
+
+cart=[];
+
+renderCart();
+
+});
+
+// =========================
+// CLOSE RECEIPT
+// =========================
+function closeReceipt(){
+
+document
+.getElementById("receiptModal")
+.remove();
+
+}
+
+// =========================
+// INITIALIZE
+// =========================
+renderProducts();
+renderCart();
+</script>
+
+</body>
+</html>
